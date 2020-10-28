@@ -5,10 +5,12 @@ import java.io.IOException;
 
 public class StateCodeAnalyserTest {
     public static final String STATECODE_CSVFILE= "C:\\Users\\USER\\Desktop\\files\\StateCode.csv";
+    public static final String STATECODE_CSVFILEWRONGPATH= "C:\\Users\\USER\\StateCensusData.csv";
+    public static final String STATECODE_CSVFILEWRONGTYPE= "C:\\Users\\USER\\Desktop\\files\\StateCodepdf.pdf";
     public static final String STATECODE_CSVFILEWRONGDELIMITER= "C:\\Users\\USER\\Desktop\\files\\StateCodedelimiter.csv";
     public static final String STATECODE_CSVFILEWRONGHEADER= "C:\\Users\\USER\\Desktop\\files\\StateCodeheader.csv";
-    public static final String STATECODE_CSVFILEWRONGTYPE= "C:\\Users\\USER\\Desktop\\files\\StateCodepdf.pdf";
-    public static final String STATECODE_CSVFILEWRONGPATH= "C:\\Users\\USER\\StateCensusData.csv";
+
+
     @Test
     public void GivenStateCodesCsvFile_IfCorrectNumOfRecords_Should_ReturnTrue() throws IOException {
         try {
@@ -22,11 +24,42 @@ public class StateCodeAnalyserTest {
     @Test
     public void GivenStateCensusCsvFile_If_DoesntExist_ShouldThrowCensusAnalyserException() throws IOException {
         try {
-            int count = StateCodeAnalyser.openCsvBuilder(STATECODE_CSVFILEWRONGDELIMITER, StateCode.class);
+            int count = StateCodeAnalyser.openCsvBuilder(STATECODE_CSVFILEWRONGPATH, StateCode.class);
         } catch (CensusException e) {
             e.printStackTrace();
             Assert.assertEquals(CensusException.CensusExceptionType.NO_SUCH_FILE, e.type);
         }
     }
 
+    @Test
+    public void GivenTheStateCensusCsvFile_FileExtIncorrect_ShouldThrow_CensusException() throws IOException {
+        try {
+            int count = StateCodeAnalyser.openCsvBuilder(STATECODE_CSVFILEWRONGTYPE, StateCode.class);
+        } catch (CensusException e) {
+            e.printStackTrace();
+            Assert.assertEquals(CensusException.CensusExceptionType.INCORRECT_DATA_ISSUE, e.type);
+        }
+    }
+/*
+    @Test
+    public void GivenStateCensusCSVFile_DelimiterIncorrect_ReturnsCensusException() throws IOException {
+        try {
+            int count = StateCodeAnalyser.openCsvBuilder(STATECODE_CSVFILEWRONGDELIMITER, StateCode.class);
+        } catch (CensusException e) {
+            e.printStackTrace();
+            Assert.assertEquals(CensusException.CensusExceptionType.INCORRECT_DATA_ISSUE, e.type);
+
+        }
+    }
+
+    @Test
+    public void whenCorrectCensusCSVFile_HeaderNotCorrect_ShouldReturnFalse() throws IOException {
+        try {
+            int count = StateCodeAnalyser.openCsvBuilder(STATECODE_CSVFILEWRONGHEADER, StateCode.class);
+        } catch (CensusException e) {
+            e.printStackTrace();
+            Assert.assertEquals(CensusException.CensusExceptionType.INCORRECT_DATA_ISSUE, e.type);
+        }
+    }
+*/
 }
