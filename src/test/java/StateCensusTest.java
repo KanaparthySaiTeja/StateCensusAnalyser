@@ -49,4 +49,14 @@ public class StateCensusTest {
 
         }
     }
+
+    @Test
+    public void whenCorrectCensusCSVFile_HeaderNotCorrect_ShouldReturnFalse() throws IOException {
+        try {
+            int count = StateCensusAnalyser.openCsvBuilder(STATECENSUS_CSVFILEWRONGHEADER, StateCensus.class);
+        } catch (CensusException e) {
+            e.printStackTrace();
+            Assert.assertEquals(CensusException.CensusExceptionType.INCORRECT_DATA_ISSUE, e.type);
+        }
+    }
 }
